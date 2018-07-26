@@ -1,7 +1,13 @@
 ## niceplots
 
+### Example
+
+![example](example.png)
+
+
 This is a single file PHP script that you can plop into a directory full of images to nicely
-format them on a page so that they are searchable and sortable.
+format them on a page so that they are searchable and sortable. Searching supports regex and is
+live! Some Vim keybindings are also provided.
 
 By default, browser-friendly images (png, svg, gif) are displayed, and if a pdf version of the file
 (same name with "pdf" extension) exists, the images are links to those.
@@ -33,10 +39,6 @@ them all the png and (2) upload them to a directory with the niceplots index pag
 That's where `niceplots.sh` comes in. Note that this script is basically a template,
 as these operations are highly dependent upon your configuration/computer, 
 so assume you will need to modify many parts.
-
-### Example
-
-![example](example.png)
 
 ### Features
 
