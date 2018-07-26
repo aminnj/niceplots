@@ -16,7 +16,7 @@ By default, browser-friendly images (png, svg, gif) are displayed, and if a pdf 
 
 #### With web server 
 
-Literally just copy `index.php` into a web directory that supports PHP.
+Literally just copy `index.php` into a web directory with plots/images that supports PHP.
 
 #### Local testing
 
@@ -34,11 +34,11 @@ python -m SimpleHTTPServer
 
 #### Helper script for image conversion
 
-Often, you'll make a billion pdf images from a script and you want to (1) convert 
-them all the png and (2) upload them to a directory with the niceplots index page.
-That's where `niceplots.sh` comes in. Note that this script is basically a template,
-as these operations are highly dependent upon your configuration/computer, 
-so assume you will need to modify many parts.
+Often, you'll make a billion pdf images from a script and you want to (1)
+convert them all to embeddable png files and (2) upload them to a directory
+with the niceplots index page.  That's where `niceplots.sh` comes in. Note that
+this script is basically a template, as these operations are highly dependent
+upon your configuration/computer, so assume you will need to modify many parts.
 
 ### Features
 
