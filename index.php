@@ -487,8 +487,8 @@ $(document).keydown(function(e) {
             // m to toggle dark mode
             toggleDarkMode();
         }
-        if(e.keyCode == 83) {
-            // s to toggle super saturation mode
+        if(e.keyCode == 66) {
+            // b to toggle super saturation mode
             toggleSaturation();
         }
     }

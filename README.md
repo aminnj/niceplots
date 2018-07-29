@@ -45,6 +45,8 @@ upon your configuration/computer, so assume you will need to modify many parts.
 * regex searching with live pattern matching for instant feedback
   * patterns are case-insensitive until an upper-case character is typed (vim `set smartcase`)
 
+* dark mode and super-saturation mode (to make colors _pop_)
+
 * tree-viewer (supporting shift click for multiple selection/filtering, through `jstree`) becomes
 available when there is at least one subdirectory with content
 
@@ -59,6 +61,9 @@ available when there is at least one subdirectory with content
   * `y` to copy the contents as a URL
   * `s` to sort A-Z
   * `S` to sort Z-A
+  * `S` to sort Z-A
+  * `b` to toggle super-saturation mode
+  * `m` to toggle dark mode
 
 Here are some lesser known features. Note that "[hacky/hardcoded]" means "look at the source and modify it
 because I didn't care enough to code it generally".
