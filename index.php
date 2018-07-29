@@ -23,9 +23,6 @@ echo $folder;
 mark {
   padding: 0px;
   color: #f00;
-  /* color: #733; */
- /* background: linear-gradient(to right, #f0ad4e 50%, #0ff 50%);*/
-/*  background: linear-gradient(to right, rgb(50,180,180,0.5), #9198e5);*/
   background: none;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.29);
 }
@@ -46,21 +43,25 @@ mark {
 
 body {
     font-family: sans-serif;
+    background-color: #fff;
+}
+body.dark-mode {
+    background-color: #000;
 }
 
 
 fieldset {
+border:2px solid #000;
 border-radius: 8px;
+}
+fieldset.dark-mode {
+border-color: #fff;
 }
 
 #custom-handle {
     width: 3em;
     font-family: sans-serif;
-    /* height: 1.6em; */
-    /* top: 50%; */
-    /* margin-top: -.8em; */
     text-align: center;
-    /* line-height: 1.6em; */
   }
 
 #slider {
@@ -86,8 +87,40 @@ position:relative;
 top: 30px;
 }
 
+.innerimg {
+}
+.innerimg.dark-mode {
+filter: hue-rotate(180deg) invert(1);
+-webkit-filter: hue-rotate(180deg) invert(1);
+}
+.innerimg.super-saturate {
+filter: saturate(5);
+-webkit-filter: saturate(5);
+}
+.innerimg.dark-mode-super-saturate {
+filter: hue-rotate(180deg) invert(1) saturate(5);
+-webkit-filter: hue-rotate(180deg) invert(1) saturate(5);
+}
+
+
 legend {
 font-weight: bold;
+}
+legend.dark-mode {
+color: #fff;
+}
+
+a {
+}
+a.dark-mode {
+    color: #55f;
+}
+
+#message {
+    color: #000;
+}
+#message.dark-mode {
+    color: #fff;
 }
 
 </style>
@@ -159,10 +192,10 @@ function draw_objects(file_objects) {
         var json_str = (fo["json"].length > 0) ? " <a href='"+jsrootbase+fo["json"]+"' id='"+"json_"+fo["name_noext"]+"'>[js]</a>" : "";
         $("#images").append(
             "<div class='box' id='"+name_noext+"'>"+
-                "    <fieldset style='border:2px solid "+color+"'>"+
-                "        <legend>"+name_noext+txt_str+extra_str+json_str+"</legend>"+
+                "    <fieldset class='has-dark'>"+
+                "        <legend class='has-dark'>"+name_noext+txt_str+extra_str+json_str+"</legend>"+
                 "        <a href='"+pdf+"'>"+
-                "            <img class='innerimg' name='"+name_noext+"' src='"+path+"/"+name+"' height='300px' />"+
+                "            <img class='innerimg has-dark' name='"+name_noext+"' src='"+path+"/"+name+"' height='300px' />"+
                 "        </a>"+
                 "    </fieldset>"+
                 "</div>"
@@ -450,6 +483,14 @@ $(document).keydown(function(e) {
                 $("#images").html($(".box").sort(function (a,b) { return $(a).attr("id") > $(b).attr("id"); }));
             }
         }
+        if(e.keyCode == 77) {
+            // m to toggle dark mode
+            toggleDarkMode();
+        }
+        if(e.keyCode == 83) {
+            // s to toggle super saturation mode
+            toggleSaturation();
+        }
     }
 });
 
@@ -469,19 +510,37 @@ function getQueryURL() {
     copyToClipboard(queryURL)
 }
 
+var darkMode = false;
+function toggleDarkMode() {
+    $(".has-dark").toggleClass("dark-mode");
+    darkMode ^= true;
+}
+
+var superSaturation = false;
+function toggleSaturation() {
+    if (darkMode) {
+        $(".innerimg").toggleClass("dark-mode-super-saturate");
+    } else {
+        $(".innerimg").toggleClass("super-saturate");
+    }
+    superSaturation ^= true;
+}
+
 </script>
 
 </head>
 
-<body>
+<body class="has-dark">
 
   <div id="jstree_demo_div"> </div>
   <div id="modal"></div>
 
 <input type="text" class="inputbar" id="filter" placeholder="Search/wildcard filter" />
-<a href="javascript:;" onClick="getQueryURL();">copy as URL</a> &nbsp; &nbsp; 
+&nbsp;
+<a href="javascript:;" class='has-dark' onClick="getQueryURL();">copy as URL</a> &nbsp; &nbsp; 
 <div id="slider"><div id="custom-handle" class="ui-slider-handle"></div></div>
-<span id="message"></span>
+&nbsp;
+<span class='has-dark' id="message"></span>
 
 <div id="description">
 <?php
@@ -495,7 +554,6 @@ if( $description ) {
 <div id="images"></div>
 <div id="bintablecontainer"  style="text-align: center;">
     <div id="bintable" style="display: inline-block; text-align: left; display: none">
-    <!-- <div id="bintable" style="display: inline-block; text-align: left;"> -->
     </div>
 </div>
 
