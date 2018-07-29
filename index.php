@@ -500,7 +500,7 @@ function copyToClipboard(text) {
     $temp.val(text).select();
     document.execCommand("copy");
     $temp.remove();
-    $("#message").html("Copied to clipboard!");
+    $("#message").html("Copied to clipboard!").delay(600).queue(function(n) {$(this).html("");n();});
 }
 
 function getQueryURL() {
