@@ -94,12 +94,12 @@ filter: hue-rotate(180deg) invert(1);
 -webkit-filter: hue-rotate(180deg) invert(1);
 }
 .innerimg.super-saturate {
-filter: saturate(5);
--webkit-filter: saturate(5);
+filter: saturate(3);
+-webkit-filter: saturate(3);
 }
 .innerimg.dark-mode-super-saturate {
-filter: hue-rotate(180deg) invert(1) saturate(5);
--webkit-filter: hue-rotate(180deg) invert(1) saturate(5);
+filter: hue-rotate(180deg) invert(1) saturate(3);
+-webkit-filter: hue-rotate(180deg) invert(1) saturate(3);
 }
 
 
