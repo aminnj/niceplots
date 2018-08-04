@@ -49,6 +49,11 @@ body.dark-mode {
     background-color: #000;
 }
 
+.noborder {
+    border: none;
+    /* to take up full width */
+    /* width:100vw; */
+}
 
 fieldset {
 border:2px solid #000;
@@ -491,6 +496,10 @@ $(document).keydown(function(e) {
             // b to toggle super saturation mode
             toggleSaturation();
         }
+        if(e.keyCode == 88) {
+            // x to show and hide images
+            toggleImages();
+        }
     }
 });
 
@@ -524,6 +533,10 @@ function toggleSaturation() {
         $(".innerimg").toggleClass("super-saturate");
     }
     superSaturation ^= true;
+}
+function toggleImages() {
+    $("img").toggle();
+    $("fieldset").toggleClass("noborder");
 }
 
 </script>

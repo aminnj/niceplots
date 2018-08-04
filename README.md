@@ -61,9 +61,9 @@ available when there is at least one subdirectory with content
   * `y` to copy the contents as a URL
   * `s` to sort A-Z
   * `S` to sort Z-A
-  * `S` to sort Z-A
   * `b` to toggle super-saturation mode
   * `m` to toggle dark mode
+  * `x` to toggle image visibility
 
 Here are some lesser known features. Note that "[hacky/hardcoded]" means "look at the source and modify it
 because I didn't care enough to code it generally".
