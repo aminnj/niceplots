@@ -250,8 +250,31 @@ function make_objects(filelist) {
 }
 
 function register_hover() {
+    console.log("registering hover");
+    $("[id^=text_],[id^=extra_]").hover(
+        function() {
+            console.log("fading in hover");
+            $(this).delay(1000).queue(function(){
+                $(this).addClass('hovered').siblings().removeClass('hovered');
+                var link = $(this).attr('href');
+                console.log(link);
+                $("#bintable").load(link, function() {
+                    $("#bintable").html($("#bintable").html().replace(/\n/g,"<br>\n"));
+                    $("#bintable").html($("#bintable").html().replace(/ /g,"&nbsp;"));
+                    $("#bintable").html($("#bintable").html().replace("total_bkg","<b>total_bkg</b>"));
+                });
+                console.log("fading in");
+                $("#bintable").fadeIn();
+            });
+        },function() {
+            $(this).finish();
+            $("#bintable").delay(500).fadeOut();
+        } 
+    );
+
+    if (!binInfo) return;
+
     $("img").mousemove(function(event) {
-        if (!binInfo) return;
         /* console.log(event.offsetX + " " + event.offsetY + " " + event.currentTarget.height + " " + event.currentTarget.name); */
         var name = event.currentTarget.name;
         /* var width = event.currentTarget.width; */
@@ -309,28 +332,6 @@ function register_hover() {
         ctx.rect(1,1,w-2,h-2);
         ctx.stroke();
     });
-    console.log("registering hover");
-    $("[id^=text_],[id^=extra_]").hover(
-        function() {
-            console.log("fading in hover");
-            $(this).delay(1000).queue(function(){
-                $(this).addClass('hovered').siblings().removeClass('hovered');
-                var link = $(this).attr('href');
-                console.log(link);
-                $("#bintable").load(link, function() {
-                    $("#bintable").html($("#bintable").html().replace(/\n/g,"<br>\n"));
-                    $("#bintable").html($("#bintable").html().replace(/ /g,"&nbsp;"));
-                    $("#bintable").html($("#bintable").html().replace("total_bkg","<b>total_bkg</b>"));
-                });
-                console.log("fading in");
-                $("#bintable").fadeIn();
-            });
-        },function() {
-            $(this).finish();
-            $("#bintable").delay(500).fadeOut();
-        } 
-    );
-
 }
 
 function register_description_hover() {
@@ -419,9 +420,30 @@ $(function() {
         });
     };
 
-    $( "input[id='filter']" ).on('keyup', function() {
+    // $( "input[id='filter']" ).on('keyup', function() {
+    //     var pattern = $(this).val();
+    //     markre(pattern);
+    // });
+
+    var timer;
+    var lastPattern = "";
+    var timeoutms = 250;
+    if (obj.length < 200) {
+        timeoutms = 0;
+    }
+    $("input[id='filter']").keyup(function(e) {
         var pattern = $(this).val();
-        markre(pattern);
+        if (pattern == lastPattern) return;
+        if (lastPattern == "") {
+            lastPattern = this.value;
+            return;
+        } else {
+            lastPattern = this.value;
+        }
+        clearTimeout(timer);
+        timer = setTimeout(function() {
+            markre(lastPattern);
+        }, timeoutms);
     });
 
     var handle = $( "#custom-handle" );
@@ -461,8 +483,8 @@ $(function() {
 
 // vimlike incsearch: press / to focus on search box
 $(document).keydown(function(e) {
-    console.log($(event.target));
-    console.log(e.keyCode);
+    // console.log($(event.target));
+    // console.log(e.keyCode);
     if(e.keyCode == 191) {
         // / focus search box
         e.preventDefault();
