@@ -398,8 +398,7 @@ $(function() {
 
     var markre = function(pattern) {
         
-        context=$("legend");
-        context.parent().parent().show();
+        var context=$("legend");
         $("#message").html("");
         context.unmark();
 
@@ -409,6 +408,8 @@ $(function() {
         var regex = new RegExp(pattern,modifier);
         context.markRegExp(regex,{
             done: function(counter) {
+                // show all matches and hide those that don't match
+                context.has("mark").parent().parent().show();
                 context.not(":has(mark)").parent().parent().hide();
                 console.log(counter);
                 if (counter > 0) {
@@ -428,8 +429,8 @@ $(function() {
 
     var timer;
     var lastPattern = "";
-    var timeoutms = 350;
-    if (obj.length < 200) {
+    var timeoutms = 300;
+    if (obj.length < 400) {
         timeoutms = 0;
     }
     $("input[id='filter']").keyup(function(e) {
