@@ -24,7 +24,7 @@ mark {
   padding: 0px;
   color: #f00;
   background: none;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.29);
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.25), 0 3px 2px 0 rgba(0, 0, 0, 0.25);
 }
 
 #bintablecontainer {
@@ -52,8 +52,8 @@ body.dark-mode {
 .noborder {
     border: none;
     padding: 0px;
-    /* to take up full width */
-    width:100vw;
+    /* to take up full width without showing horizontal scrollbar */
+    width:90vw;
 }
 
 fieldset {
@@ -408,15 +408,26 @@ $(function() {
         var regex = new RegExp(pattern,modifier);
         context.markRegExp(regex,{
             done: function(counter) {
-                // show all matches and hide those that don't match
-                context.has("mark").parent().parent().show();
-                context.not(":has(mark)").parent().parent().hide();
                 console.log(counter);
                 if (counter > 0) {
+                    // show all matches and hide those that don't match
+                    context.not(":has(mark)").parent().parent().hide();
+                    var toshow = context.has("mark").parent().parent();
+                    var nmatches = toshow.length;
+                    toshow.show();
+                    console.log(toshow.length);
+                    if (nmatches == 1) {
+                        $("#message").html(`${nmatches} match`);
+                    } else {
+                        $("#message").html(`${nmatches} matches`);
+                    }
                     register_hover();
                 } else {
                     context.parent().parent().show();
-                    $("#message").html("No matching images!");
+                    // $("#message").html("No matching images!");
+                    if (pattern.length > 0) {
+                        $("#message").html("0 matches!");
+                    }
                 }
             },
         });
@@ -452,8 +463,8 @@ $(function() {
     $( "#slider" ).slider({
     value: 100,
         range: "min",
-    min: 20,
-    max: 250,
+        min: 0,
+        max: 300,
     create: function() {
         /* handle.text( $( this ).slider( "value" ) ); */
         handle.text( "100%" );
@@ -461,6 +472,9 @@ $(function() {
         slide: function( event, ui ) {
             handle.text( ui.value + "%" );
             $("img").attr("height",300*ui.value/100);
+            if ((ui.value == 0 && imagesVisible) || (ui.value != 0 && !imagesVisible)) {
+                toggleImages();
+            }
         }
     });
 
@@ -561,9 +575,11 @@ function toggleSaturation() {
     }
     superSaturation ^= true;
 }
+var imagesVisible = true;
 function toggleImages() {
     $("img").toggle();
     $("fieldset").toggleClass("noborder");
+    imagesVisible ^= true;
 }
 
 </script>
