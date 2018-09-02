@@ -51,8 +51,9 @@ body.dark-mode {
 
 .noborder {
     border: none;
+    padding: 0px;
     /* to take up full width */
-    /* width:100vw; */
+    width:100vw;
 }
 
 fieldset {
@@ -78,7 +79,7 @@ top: 5px;
 
 .box {
 float:left;
-padding: 5px; /* space between image and border */
+padding: 3px; /* space between image and border */
 }
 
 .plot {
@@ -505,9 +506,9 @@ $(document).keydown(function(e) {
         if(e.keyCode == 83) {
             // s and shift S to sort a-z or z-a
             if (e.shiftKey) {
-                $("#images").html($(".box").sort(function (a,b) { return $(a).attr("id") < $(b).attr("id"); }));
+                $("#images").html($(".box").sort(function (a,b) { return $(a).attr("id").localeCompare($(b).attr("id")); }));
             } else {
-                $("#images").html($(".box").sort(function (a,b) { return $(a).attr("id") > $(b).attr("id"); }));
+                $("#images").html($(".box").sort(function (a,b) { return -$(a).attr("id").localeCompare($(b).attr("id")); }));
             }
         }
         if(e.keyCode == 77) {
@@ -544,6 +545,9 @@ function getQueryURL() {
 var darkMode = false;
 function toggleDarkMode() {
     $(".has-dark").toggleClass("dark-mode");
+    if (superSaturation) {
+        toggleSaturation();
+    }
     darkMode ^= true;
 }
 
