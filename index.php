@@ -428,7 +428,7 @@ $(function() {
 
     var timer;
     var lastPattern = "";
-    var timeoutms = 250;
+    var timeoutms = 350;
     if (obj.length < 200) {
         timeoutms = 0;
     }
