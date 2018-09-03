@@ -487,7 +487,7 @@ $(function() {
     if(window.location.href.indexOf("?") != -1) {
         var search = unescape(window.location.href.split("?")[1]);
         $("#filter").val(search);
-        $("#filter").trigger("keyup");
+        markre($("#filter").val());
     }
 
     register_hover();
