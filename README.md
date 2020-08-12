@@ -25,11 +25,10 @@ web server, you can use python's `SimpleHTTPServer` to display the HTML page
 after executing the php script with `php`. If you can't `which php`, then tough luck.
 
 ```bash
-cp index.php testplots/
 cd testplots
-php index.php > test.html
-python -m SimpleHTTPServer
-# navigate to http://localhost:8000/test.html
+php ../index.php > index.html
+python -m SimpleHTTPServer # or `python -m http.server` if python3
+# visit http://localhost:8000/ in your browser
 ```
 
 #### Helper script for image conversion
