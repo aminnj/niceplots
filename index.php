@@ -211,7 +211,7 @@ function draw_objects(file_objects) {
                             <span class='label label-rounded'>${name_noext}</span>
                             ${txt_str+extra_str+json_str}
                         </legend>
-                        <a href='"+pdf+"'>
+                        <a href='${pdf}'>
                             <img class='innerimg has-dark' name='${name_noext}' src='${path+"/"+name}' height='300px' />
                         </a>
                     </fieldset>
