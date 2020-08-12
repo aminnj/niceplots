@@ -14,17 +14,18 @@ echo $folder;
 <script defer src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js"></script>
-<link defer rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.min.css">
 <link defer rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+<link defer rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+<link defer rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+<link defer rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
 <link rel="icon" type="image/png" href="../trashcan.png" />
 
 <style>
 
 mark {
   padding: 0px;
-  color: #f00;
-  background: none;
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.25), 0 3px 2px 0 rgba(0, 0, 0, 0.25);
+  color: #fff;
+  background: #4543dc;
 }
 
 #bintablecontainer {
@@ -57,8 +58,9 @@ body.dark-mode {
 }
 
 fieldset {
-border:2px solid #000;
+border:0.1rem solid #999;
 border-radius: 8px;
+margin: 1px;
 }
 fieldset.dark-mode {
 border-color: #fff;
@@ -72,8 +74,8 @@ border-color: #fff;
 
 #slider {
 display:inline-block;
-width: 200px;
-top: 5px;
+width: 10%;
+padding-top: 10px;
 }
 
 
@@ -90,10 +92,15 @@ padding: 3px; /* space between image and border */
 
 #images {
 position:relative;
-top: 30px;
+    padding-top: 10px;
+}
+
+#container {
+margin: 1%;
 }
 
 .innerimg {
+    padding: 3px;
 }
 .innerimg.dark-mode {
 filter: hue-rotate(180deg) invert(1);
@@ -111,6 +118,8 @@ filter: hue-rotate(180deg) invert(1) saturate(2.5);
 
 legend {
 font-weight: bold;
+    font-size: 90%;
+    margin: 0px;
 }
 legend.dark-mode {
 color: #fff;
@@ -122,12 +131,6 @@ a.dark-mode {
     color: #55f;
 }
 
-#message {
-    color: #000;
-}
-#message.dark-mode {
-    color: #fff;
-}
 
 </style>
 
@@ -193,19 +196,20 @@ function draw_objects(file_objects) {
         var color = fo["color"];
         var pdf = fo["pdf"] || fo["name"];
         if (path) pdf = path+pdf;
-        var txt_str = (fo["txt"].length > 0) ? " <a href='"+fo["txt"]+"' id='"+"text_"+fo["name_noext"]+"'>[text]</a>" : "";
-        var extra_str = (fo["extra"].length > 0) ? " <a href='"+fo["extra"]+"' id='"+"extra_"+fo["name_noext"]+"'>[extra]</a>" : "";
-        var json_str = (fo["json"].length > 0) ? " <a href='"+jsrootbase+fo["json"]+"' id='"+"json_"+fo["name_noext"]+"'>[js]</a>" : "";
-        $("#images").append(
-            "<div class='box' id='"+name_noext+"'>"+
-                "    <fieldset class='has-dark'>"+
-                "        <legend class='has-dark'>"+name_noext+txt_str+extra_str+json_str+"</legend>"+
-                "        <a href='"+pdf+"'>"+
-                "            <img class='innerimg has-dark' name='"+name_noext+"' src='"+path+"/"+name+"' height='300px' />"+
-                "        </a>"+
-                "    </fieldset>"+
-                "</div>"
-        );
+        var txt_str = (fo["txt"].length > 0) ? `<span class='label label-rounded label-secondary'><a href='${fo["txt"]}' id='text_${fo["name_noext"]}'>text</a></span>` : "";
+        var extra_str = (fo["extra"].length > 0) ? `<span class='label label-rounded'><a href='${fo["extra"]}' id='extra_${fo["name_noext"]}'>extra</a></span>` : "";
+        var json_str = (fo["extra"].length > 0) ? `<span class='label label-rounded'><a href='${jsrootbase+fo["json"]}' id='json_${fo["name_noext"]}'>js</a></span>` : "";
+        $("#images").append(`<div class='box' id='${name_noext}'>
+                    <fieldset class='has-dark'>
+                        <legend class='has-dark'>
+                            <span class='label label-rounded'>${name_noext}</span>
+                            ${txt_str+extra_str+json_str}
+                        </legend>
+                        <a href='${pdf}'>
+                            <img class='innerimg has-dark' name='${name_noext}' src='${path+"/"+name}' height='300px' />
+                        </a>
+                    </fieldset>
+                </div>`);
     }
 }
 
@@ -405,10 +409,13 @@ $(function() {
         var modifier = "";
         if (pattern.toLowerCase() == pattern) modifier = "i"; // like :set smartcase in vim (case-sensitive if there's an uppercase char)
 
+        $(".form-icon").addClass("loading");
+
         var regex = new RegExp(pattern,modifier);
         context.markRegExp(regex,{
             done: function(counter) {
                 console.log(counter);
+                $(".form-icon").removeClass("loading");
                 if (counter > 0) {
                     // show all matches and hide those that don't match
                     context.not(":has(mark)").parent().parent().hide();
@@ -421,12 +428,14 @@ $(function() {
                     } else {
                         $("#message").html(`${nmatches} matches`);
                     }
+                    $("#message").removeClass("label-warning");
                     register_hover();
                 } else {
                     context.parent().parent().show();
                     // $("#message").html("No matching images!");
                     if (pattern.length > 0) {
                         $("#message").html("0 matches!");
+                        $("#message").addClass("label-warning");
                     }
                 }
             },
@@ -460,21 +469,13 @@ $(function() {
     });
 
     var handle = $( "#custom-handle" );
-    $( "#slider" ).slider({
-    value: 100,
-        range: "min",
-        min: 0,
-        max: 300,
-    create: function() {
-        /* handle.text( $( this ).slider( "value" ) ); */
-        handle.text( "100%" );
-    },
-        slide: function( event, ui ) {
-            handle.text( ui.value + "%" );
-            $("img").attr("height",300*ui.value/100);
-            if ((ui.value == 0 && imagesVisible) || (ui.value != 0 && !imagesVisible)) {
-                toggleImages();
-            }
+    // $("#slider").change(function() {
+    $("#slider").bind("input",function() {
+        var val = $(this).val();
+        console.log(val);
+        $("img").attr("height",300*val/100);
+        if ((val == 0 && imagesVisible) || (val != 0 && !imagesVisible)) {
+            toggleImages();
         }
     });
 
@@ -588,16 +589,45 @@ function toggleImages() {
 
 <body class="has-dark">
 
-  <div id="jstree_demo_div"> </div>
-  <div id="modal"></div>
+    <div id="container">
 
-<input type="text" class="inputbar" id="filter" placeholder="Search/wildcard filter" />
-&nbsp;
-<a href="javascript:;" class='has-dark' onClick="getQueryURL();">copy as URL</a> &nbsp; &nbsp; 
-<div id="slider"><div id="custom-handle" class="ui-slider-handle"></div></div>
-&nbsp;
-<span class='has-dark' id="message"></span>
+        <div id="jstree_demo_div"> </div>
 
+        <div class="has-icon-right" style="width: 200px; display: inline-block;">
+            <input type="text" class="form-input input-sm inputbar" id="filter" placeholder="Search/wildcard filter" />
+            <i class="form-icon"></i>
+        </div>
+
+        &nbsp;
+        <a href="javascript:;" class='has-dark btn btn-sm' onClick="getQueryURL();">copy as URL</a> &nbsp; &nbsp; 
+
+        <input id="slider" class="slider input-sm tooltip tooltip-bottom" type="range" min="0" max="300" value="100" oninput="this.setAttribute('value', this.value);">
+
+        &nbsp;
+        <div class="popover popover-bottom">
+            <button class="btn btn btn-sm">help</button>
+            <div class="popover-container">
+                <div class="card">
+                    <div class="card-header">
+                        Keybindings
+                    </div>
+                    <div class="card-body">
+                        <kbd>G</kbd> to go to bottom <br>
+                        <kbd>g</kbd> to go to top <br>
+                        <kbd>/</kbd> to focus the search box <br>
+                        <kbd>y</kbd> to copy the contents as a URL <br>
+                        <kbd>s</kbd> to sort A-Z <br>
+                        <kbd>S</kbd> to sort Z-A <br>
+                        <kbd>b</kbd> to toggle super-saturation mode <br>
+                        <kbd>m</kbd> to toggle dark mode <br>
+                        <kbd>x</kbd> to toggle image visibility <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        &nbsp;
+        <span class='label' id="message"></span>
 <div id="description">
 <?php
 $description = @file_get_contents("description.txt");
@@ -609,11 +639,12 @@ if( $description ) {
 </div>
 <div id="images"></div>
 <div id="bintablecontainer"  style="text-align: center;">
-    <div id="bintable" style="display: inline-block; text-align: left; display: none">
-    </div>
+<div id="bintable" style="display: inline-block; text-align: left; display: none">
+</div>
 </div>
 
 <canvas id='hovercanvas' width="50" height="300"></canvas>
+</div>
 
 
 </body>
