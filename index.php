@@ -58,7 +58,7 @@ body.dark-mode {
 }
 
 fieldset {
-border:0.1rem solid #babec7;
+border:0.1rem solid #999;
 border-radius: 8px;
 margin: 1px;
 }
@@ -74,7 +74,7 @@ border-color: #fff;
 
 #slider {
 display:inline-block;
-width: 20%;
+width: 10%;
 padding-top: 10px;
 }
 
@@ -131,12 +131,6 @@ a.dark-mode {
     color: #55f;
 }
 
-#message {
-    color: #000;
-}
-#message.dark-mode {
-    color: #fff;
-}
 
 </style>
 
@@ -434,12 +428,14 @@ $(function() {
                     } else {
                         $("#message").html(`${nmatches} matches`);
                     }
+                    $("#message").removeClass("label-warning");
                     register_hover();
                 } else {
                     context.parent().parent().show();
                     // $("#message").html("No matching images!");
                     if (pattern.length > 0) {
                         $("#message").html("0 matches!");
+                        $("#message").addClass("label-warning");
                     }
                 }
             },
@@ -598,16 +594,40 @@ function toggleImages() {
         <div id="jstree_demo_div"> </div>
 
         <div class="has-icon-right" style="width: 200px; display: inline-block;">
-            <input type="text" class="form-input inputbar" id="filter" placeholder="Search/wildcard filter" />
+            <input type="text" class="form-input input-sm inputbar" id="filter" placeholder="Search/wildcard filter" />
             <i class="form-icon"></i>
         </div>
 
         &nbsp;
-        <a href="javascript:;" class='has-dark btn' onClick="getQueryURL();">copy as URL</a> &nbsp; &nbsp; 
+        <a href="javascript:;" class='has-dark btn btn-sm' onClick="getQueryURL();">copy as URL</a> &nbsp; &nbsp; 
 
-        <input id="slider" class="slider tooltip tooltip-bottom" type="range" min="0" max="300" value="100" oninput="this.setAttribute('value', this.value);">
+        <input id="slider" class="slider input-sm tooltip tooltip-bottom" type="range" min="0" max="300" value="100" oninput="this.setAttribute('value', this.value);">
 
-        <span class='has-dark' id="message"></span>
+        &nbsp;
+        <div class="popover popover-bottom">
+            <button class="btn btn btn-sm">help</button>
+            <div class="popover-container">
+                <div class="card">
+                    <div class="card-header">
+                        Keybindings
+                    </div>
+                    <div class="card-body">
+                        <kbd>G</kbd> to go to bottom <br>
+                        <kbd>g</kbd> to go to top <br>
+                        <kbd>/</kbd> to focus the search box <br>
+                        <kbd>y</kbd> to copy the contents as a URL <br>
+                        <kbd>s</kbd> to sort A-Z <br>
+                        <kbd>S</kbd> to sort Z-A <br>
+                        <kbd>b</kbd> to toggle super-saturation mode <br>
+                        <kbd>m</kbd> to toggle dark mode <br>
+                        <kbd>x</kbd> to toggle image visibility <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        &nbsp;
+        <span class='label' id="message"></span>
 <div id="description">
 <?php
 $description = @file_get_contents("description.txt");
