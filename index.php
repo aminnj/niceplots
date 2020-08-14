@@ -424,20 +424,24 @@ $(function() {
                     var nmatches = toshow.length;
                     toshow.show();
                     console.log(toshow.length);
-                    if (nmatches == 1) {
-                        $("#message").html(`${nmatches} match`);
-                    } else {
-                        $("#message").html(`${nmatches} matches`);
-                    }
-                    $("#message").addClass("label");
-                    $("#message").removeClass("label-warning");
+                    // if (nmatches == 1) {
+                        // $("#message").html(`${nmatches} match`);
+                    // } else {
+                        // $("#message").html(`${nmatches} matches`);
+                    // }
+                    // $("#message").addClass("label");
+                    // $("#message").removeClass("label-warning");
                     register_hover();
+                    $("#copyasurl").addClass("badge");
+                    $("#copyasurl").attr("data-badge",nmatches);
                 } else {
                     context.parent().parent().show();
                     // $("#message").html("No matching images!");
                     if (pattern.length > 0) {
-                        $("#message").html("0 matches!");
-                        $("#message").addClass("label-warning");
+                        // $("#message").html("0 matches!");
+                        // $("#message").addClass("label-warning");
+                        $("#copyasurl").addClass("badge");
+                        $("#copyasurl").attr("data-badge",0);
                     }
                 }
             },
@@ -504,16 +508,19 @@ $(function() {
 $(document).keydown(function(e) {
     // console.log($(event.target));
     // console.log(e.keyCode);
-    if(e.keyCode == 191 && !e.shiftKey) {
+    var modifierNoShift = e.metaKey || e.ctrlKey || e.altKey;
+    var modifier = e.shiftKey || modifierNoShift;
+    if(e.keyCode == 191 && !modifier) {
         // / focus search box
         e.preventDefault();
         $("#filter").focus().select();
     }
     if (!$(event.target).is(":input")) {
-        if(e.keyCode== 89) {
+        if(e.keyCode== 89 && !modifier) {
+            // y
             getQueryURL();
         }
-        if(e.keyCode == 71) {
+        if(e.keyCode == 71 && !modifierNoShift) {
             // G scrolls to bottom, g to top
             if (e.shiftKey) {
                 window.scrollTo(0,document.body.scrollHeight);
@@ -521,7 +528,7 @@ $(document).keydown(function(e) {
                 window.scrollTo(0,0);
             }
         }
-        if(e.keyCode == 83) {
+        if(e.keyCode == 83 && !modifierNoShift) {
             // s and shift S to sort a-z or z-a
             if (e.shiftKey) {
                 $("#images").html($(".box").sort(function (a,b) { return $(a).attr("id").localeCompare($(b).attr("id")); }));
@@ -529,15 +536,15 @@ $(document).keydown(function(e) {
                 $("#images").html($(".box").sort(function (a,b) { return -$(a).attr("id").localeCompare($(b).attr("id")); }));
             }
         }
-        if(e.keyCode == 77) {
+        if(e.keyCode == 77 && !modifier) {
             // m to toggle dark mode
             toggleDarkMode();
         }
-        if(e.keyCode == 66) {
+        if(e.keyCode == 66 && !modifier) {
             // b to toggle super saturation mode
             toggleSaturation();
         }
-        if(e.keyCode == 88) {
+        if(e.keyCode == 88 && !modifier) {
             // x to show and hide images
             toggleImages();
         }
@@ -602,7 +609,7 @@ function toggleImages() {
         </div>
 
         &nbsp;
-        <a href="javascript:;" class='has-dark btn btn-sm' onClick="getQueryURL();">copy as URL</a> &nbsp; &nbsp; 
+        <a href="javascript:;" id="copyasurl" class='has-dark btn btn-sm' onClick="getQueryURL();" data-badge="">copy as URL</a> &nbsp; &nbsp; 
 
         <input id="slider" class="slider input-sm tooltip tooltip-bottom" type="range" min="0" max="300" value="100" oninput="this.setAttribute('value', this.value);">
 
@@ -631,7 +638,7 @@ function toggleImages() {
         </div>
 
         &nbsp;
-        <span id="message"></span>
+        <!-- <span id="message"></span> -->
 <div id="description">
 <?php
 $description = @file_get_contents("description.txt");
