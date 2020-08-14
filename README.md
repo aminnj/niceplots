@@ -5,7 +5,7 @@
 ![example](example.png)
 
 
-This is a single file PHP script that you can plop into a directory full of images to nicely
+This is a single file PHP script that you can drop into a directory full of images to nicely
 format them on a page so that they are searchable and sortable. Searching supports regex and is
 live! Some Vim keybindings are also provided.
 
@@ -14,30 +14,27 @@ By default, browser-friendly images (png, svg, gif) are displayed, and if a pdf 
 
 ### "Installation"
 
-#### With web server 
+#### With a web server 
 
-Literally just copy `index.php` into a web directory with plots/images that supports PHP.
+Just copy `index.php` into a PHP-supporting web directory with images.
 
-#### Local testing
+#### Locally
 
-For usage on a laptop, for example, when you don't want to bother setting up an Apache
-web server, you can use python's `SimpleHTTPServer` to display the HTML page
-after executing the php script with `php`. If you can't `which php`, then tough luck.
+Convert `index.php` into a static `index.html` and open it in your browser:
+```bash
+cd testplots
+php ../index.php > index.html
+open index.html
+```
 
+If you need extra features like `.txt`, `.json` below, you can use python's `SimpleHTTPServer`
+to serve up the page and bypass CORS policy:
 ```bash
 cd testplots
 php ../index.php > index.html
 python -m SimpleHTTPServer # or `python -m http.server` if python3
 # visit http://localhost:8000/ in your browser
 ```
-
-#### Helper script for image conversion
-
-Often, you'll make a billion pdf images from a script and you want to (1)
-convert them all to embeddable png files and (2) upload them to a directory
-with the niceplots index page.  That's where `niceplots.sh` comes in. Note that
-this script is basically a template, as these operations are highly dependent
-upon your configuration/computer, so assume you will need to modify many parts.
 
 ### Features
 
@@ -54,18 +51,15 @@ available when there is at least one subdirectory with content
 * zoomable plots
 
 * vim-like keybindings 
-  * `G` to go to bottom
-  * `g` to go to top
+  * `g`/`G` to go to top/bottom
   * `/` to focus the search box
   * `y` to copy the contents as a URL
-  * `s` to sort A-Z
-  * `S` to sort Z-A
+  * `s`/`S` to sort A-Z/Z-A
   * `b` to toggle super-saturation mode
   * `m` to toggle dark mode
   * `x` to toggle image visibility
 
-Here are some lesser known features. Note that "[hacky/hardcoded]" means "look at the source and modify it
-because I didn't care enough to code it generally".
+The are also some features to display/link auxiliary content.
 
 * if a `description.txt` file is found inside the folder with images, the contents are displayed (as HTML)
 at the top of the final page.
@@ -73,7 +67,12 @@ at the top of the final page.
 
 * if files with the same name as the image, but extensions of `txt`, `extra`, `json` are found, they become links
   * hovering over links for `txt` and `extra` will show the contents in a transient overlay at the bottom of the page
-  * [hacky/hardcoded] links for `json` will link to jsROOT
 
-* [hacky/hardcoded] when a `binInfo.json` file is provided (keys are image names without extensions, values are dicts with x and y edges
-(as fractions of the plot width and height), bin information, etc. (from [matplottery](https://github.com/aminnj/matplottery/tree/master/matplottery)) will display bin contents and highlight bins on mouseover
+#### Helper script for image conversion
+
+You'll might have a bunch of pdf images from a script and want to (1)
+convert them all to embeddable png files and (2) upload them to a directory
+with this niceplots index page.  That's where `niceplots.sh` comes in. Note that
+this script is basically a template, as these operations are highly dependent
+upon your configuration/computer, so assume you will need to modify many parts.
+

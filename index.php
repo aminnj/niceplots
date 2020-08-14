@@ -404,6 +404,7 @@ $(function() {
         
         var context=$("legend");
         $("#message").html("");
+        $("#message").removeClass("label");
         context.unmark();
 
         var modifier = "";
@@ -428,6 +429,7 @@ $(function() {
                     } else {
                         $("#message").html(`${nmatches} matches`);
                     }
+                    $("#message").addClass("label");
                     $("#message").removeClass("label-warning");
                     register_hover();
                 } else {
@@ -502,7 +504,7 @@ $(function() {
 $(document).keydown(function(e) {
     // console.log($(event.target));
     // console.log(e.keyCode);
-    if(e.keyCode == 191) {
+    if(e.keyCode == 191 && !e.shiftKey) {
         // / focus search box
         e.preventDefault();
         $("#filter").focus().select();
@@ -561,6 +563,7 @@ function getQueryURL() {
 var darkMode = false;
 function toggleDarkMode() {
     $(".has-dark").toggleClass("dark-mode");
+    // $(".legendname").toggleClass("label-secondary");
     if (superSaturation) {
         toggleSaturation();
     }
@@ -612,12 +615,10 @@ function toggleImages() {
                         Keybindings
                     </div>
                     <div class="card-body">
-                        <kbd>G</kbd> to go to bottom <br>
-                        <kbd>g</kbd> to go to top <br>
+                        <kbd>g</kbd> / <kbd>G</kbd> to scroll to top/bottom <br>
                         <kbd>/</kbd> to focus the search box <br>
-                        <kbd>y</kbd> to copy the contents as a URL <br>
-                        <kbd>s</kbd> to sort A-Z <br>
-                        <kbd>S</kbd> to sort Z-A <br>
+                        <kbd>y</kbd> to copy the filter state as a URL <br>
+                        <kbd>s</kbd> / <kbd>S</kbd> to sort A-Z/Z-A <br>
                         <kbd>b</kbd> to toggle super-saturation mode <br>
                         <kbd>m</kbd> to toggle dark mode <br>
                         <kbd>x</kbd> to toggle image visibility <br>
@@ -627,7 +628,7 @@ function toggleImages() {
         </div>
 
         &nbsp;
-        <span class='label' id="message"></span>
+        <span id="message"></span>
 <div id="description">
 <?php
 $description = @file_get_contents("description.txt");
