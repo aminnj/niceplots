@@ -6,11 +6,11 @@
 
 
 This is a single file PHP script that you can drop into a directory full of images to nicely
-format them on a page so that they are searchable and sortable. Searching supports regex and is
-live! Some Vim keybindings are also provided.
+format them on a page so that they are searchable and sortable. Searching supports **live regex**.
+Some **Vim keybindings** are also provided. Oh, there's also a **dark mode**, even for the images.
 
 By default, browser-friendly images (png, svg, gif) are displayed, and if a pdf version of the file
-(same name with "pdf" extension) exists, the images are links to those.
+(same name but with "pdf" as the extension) exists, the images are links to those.
 
 ### "Installation"
 
@@ -28,7 +28,7 @@ open index.html
 ```
 
 If you need extra features like `.txt`, `.json` below, you can use python's `SimpleHTTPServer`
-to serve up the page and bypass CORS policy:
+to serve up the page and bypass the CORS policy:
 ```bash
 cd testplots
 php ../index.php > index.html

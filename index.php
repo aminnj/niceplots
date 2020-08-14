@@ -623,6 +623,9 @@ function toggleImages() {
                         <kbd>m</kbd> to toggle dark mode <br>
                         <kbd>x</kbd> to toggle image visibility <br>
                     </div>
+                    <div class="card-footer">
+                        <a href="https://github.com/aminnj/niceplots">View my source on GitHub</a>
+                    </div>
                 </div>
             </div>
         </div>
