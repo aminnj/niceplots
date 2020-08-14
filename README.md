@@ -2,7 +2,7 @@
 
 ### Example
 
-![example](example.png)
+![example](misc/example.png)
 
 
 This is a single file PHP script that you can drop into a directory full of images to nicely
@@ -72,7 +72,7 @@ at the top of the final page.
 
 You'll might have a bunch of pdf images from a script and want to (1)
 convert them all to embeddable png files and (2) upload them to a directory
-with this niceplots index page.  That's where `niceplots.sh` comes in. Note that
+with this niceplots index page.  That's where `misc/niceplots.sh` comes in. Note that
 this script is basically a template, as these operations are highly dependent
 upon your configuration/computer, so assume you will need to modify many parts.
 
