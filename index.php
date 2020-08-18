@@ -10,6 +10,7 @@ echo $folder;
 ?>
 </title>
 
+<!-- <script type="text/javascript" src="http://livejs.com/live.js"></script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script defer src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
@@ -73,9 +74,8 @@ border-color: #fff;
   }
 
 #slider {
-display:inline-block;
-width: 10%;
-padding-top: 10px;
+    float:right;
+    width: 10%;
 }
 
 
@@ -232,7 +232,7 @@ function make_objects(filelist) {
         var name = f.split('/').reverse()[0];
         var path = f.replace(name, "");
         var name_noext = name.replace("."+ext,"");
-        var pdf = (filelist.indexOf(path+name_noext + ".pdf") != -1) ? path+name_noext+".pdf" : "";
+        var pdf = (filelist.indexOf(path+name_noext + ".pdf") != -1) ? name_noext+".pdf" : "";
         var txt = (filelist.indexOf(path+name_noext + ".txt") != -1) ? name_noext+".txt" : "";
         var extra = (filelist.indexOf(path+name_noext + ".extra") != -1) ? name_noext+".extra" : "";
         var json = (filelist.indexOf(path+name_noext + ".json") != -1) ? name_noext+".json" : "";
@@ -604,16 +604,14 @@ function toggleImages() {
         <div id="jstree_demo_div"> </div>
 
         <div class="has-icon-right" style="width: 200px; display: inline-block;">
-            <input type="text" class="form-input input-sm inputbar" id="filter" placeholder="Search/wildcard filter" />
+            <input type="text" class="form-input input-sm inputbar" id="filter" placeholder="Search/filter" />
             <i class="form-icon"></i>
         </div>
 
         &nbsp;
-        <a href="javascript:;" id="copyasurl" class='has-dark btn btn-sm' onClick="getQueryURL();" data-badge="">copy as URL</a> &nbsp; &nbsp; 
+        <a href="javascript:;" id="copyasurl" class='has-dark btn btn-sm' onClick="getQueryURL();" data-badge="">copy as URL</a> &nbsp;
 
-        <input id="slider" class="slider input-sm tooltip tooltip-bottom" type="range" min="0" max="300" value="100" oninput="this.setAttribute('value', this.value);">
 
-        &nbsp;
         <div class="popover popover-bottom">
             <button class="btn btn btn-sm">help</button>
             <div class="popover-container">
@@ -638,6 +636,7 @@ function toggleImages() {
         </div>
 
         &nbsp;
+        <input id="slider" class="slider input-sm tooltip tooltip-bottom" type="range" min="0" max="300" value="100" oninput="this.setAttribute('value', this.value);">
         <!-- <span id="message"></span> -->
 <div id="description">
 <?php

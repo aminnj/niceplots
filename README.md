@@ -32,8 +32,8 @@ to serve up the page and bypass the CORS policy:
 ```bash
 cd testplots
 php ../index.php > index.html
-python -m SimpleHTTPServer # or `python -m http.server` if python3
-# visit http://localhost:8000/ in your browser
+python -m SimpleHTTPServer # or `python3 -m http.server`
+# visit http://localhost:8000/index.html in your browser
 ```
 
 ### Features
