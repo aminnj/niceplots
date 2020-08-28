@@ -31,9 +31,15 @@ If you need extra features like `.txt`, `.json` below, you can use python's `Sim
 to serve up the page and bypass the CORS policy:
 ```bash
 cd testplots
+
+cp ../index.php . 
+php -S localhost:8000
+
+# OR
 php ../index.php > index.html
 python -m SimpleHTTPServer # or `python3 -m http.server`
-# visit http://localhost:8000/index.html in your browser
+
+# visit http://localhost:8000 your browser
 ```
 
 ### Features
