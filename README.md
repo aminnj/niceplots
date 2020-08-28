@@ -1,6 +1,6 @@
 ## niceplots
 
-### Example
+### Example ([try it](http://aminnj.github.io/niceplots/))
 
 ![example](misc/example.png)
 
