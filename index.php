@@ -24,22 +24,21 @@ echo $folder;
 <style>
 
 mark {
-  padding: 0px;
-  color: #fff;
-  background: #4543dc;
+    padding: 0px;
+    color: #fff;
+    background: #4543dc;
 }
 
-#bintablecontainer {
+#metadatacontainer {
     position: fixed;
     bottom: 0;
     width: 97%;
     padding: 10px; /* space between image and border */
 }
-#bintable {
-    border: 1px solid black;
-    background-color: rgba(250, 250, 250, .96);
-    font-size: 8pt;
-    font-family: monospace;
+#metadata {
+    border:0.1rem solid #999;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, .96);
     padding: 10px; /* space between image and border */
 }
 
@@ -59,19 +58,19 @@ body.dark-mode {
 }
 
 fieldset {
-border:0.1rem solid #999;
-border-radius: 8px;
-margin: 1px;
+    border:0.1rem solid #999;
+    border-radius: 8px;
+    margin: 1px;
 }
 fieldset.dark-mode {
-border-color: #fff;
+    border-color: #fff;
 }
 
 #custom-handle {
     width: 3em;
     font-family: sans-serif;
     text-align: center;
-  }
+}
 
 #slider {
     float:right;
@@ -80,49 +79,49 @@ border-color: #fff;
 
 
 .box {
-float:left;
-padding: 3px; /* space between image and border */
+    float:left;
+    padding: 3px; /* space between image and border */
 }
 
 .plot {
-  color: #070;
-  text-decoration: none;
-  border-bottom: 2px solid #bdb;
+    color: #070;
+    text-decoration: none;
+    border-bottom: 2px solid #bdb;
 }
 
 #images {
-position:relative;
+    position:relative;
     padding-top: 10px;
 }
 
 #container {
-margin: 1%;
+    margin: 1%;
 }
 
 .innerimg {
     padding: 3px;
 }
 .innerimg.dark-mode {
-filter: hue-rotate(180deg) invert(1);
--webkit-filter: hue-rotate(180deg) invert(1);
+    filter: hue-rotate(180deg) invert(1);
+    -webkit-filter: hue-rotate(180deg) invert(1);
 }
 .innerimg.super-saturate {
-filter: saturate(2.5);
--webkit-filter: saturate(2.5);
+    filter: saturate(2.5);
+    -webkit-filter: saturate(2.5);
 }
 .innerimg.dark-mode-super-saturate {
-filter: hue-rotate(180deg) invert(1) saturate(2.5);
--webkit-filter: hue-rotate(180deg) invert(1) saturate(2.5);
+    filter: hue-rotate(180deg) invert(1) saturate(2.5);
+    -webkit-filter: hue-rotate(180deg) invert(1) saturate(2.5);
 }
 
 
 legend {
-font-weight: bold;
+    font-weight: bold;
     font-size: 90%;
     margin: 0px;
 }
 legend.dark-mode {
-color: #fff;
+    color: #fff;
 }
 
 a {
@@ -177,10 +176,10 @@ foreach ( (new DirectoryIterator('.')) as $node ) {
 
 function contains_any(str, substrings) {
     for (var i = 0; i != substrings.length; i++) {
-       var substring = substrings[i];
-       if (str.indexOf(substring) != - 1) {
-         return substring;
-       }
+        var substring = substrings[i];
+        if (str.indexOf(substring) != - 1) {
+            return substring;
+        }
     }
     return null; 
 }
@@ -214,12 +213,12 @@ function draw_objects(file_objects) {
 }
 
 function draw_filtered(filter_paths) {
-        var temp_filelist = filelist.filter(function(value) {
+    var temp_filelist = filelist.filter(function(value) {
             return contains_any(value, filter_paths);
-        });
+            });
 
-        var temp_objects = make_objects(temp_filelist);
-        draw_objects(temp_objects);
+    var temp_objects = make_objects(temp_filelist);
+    draw_objects(temp_objects);
 }
 
 function make_objects(filelist) {
@@ -237,17 +236,16 @@ function make_objects(filelist) {
         var extra = (filelist.indexOf(path+name_noext + ".extra") != -1) ? name_noext+".extra" : "";
         var json = (filelist.indexOf(path+name_noext + ".json") != -1) ? name_noext+".json" : "";
         file_objects.push({
-            "path": path,
-            "name_noext": name_noext,
-            "name":name,
-            // "name":name+"?hash=<?php echo time(); ?>",
-            "ext": ext,
-            "pdf": pdf,
-            "txt": txt,
-            "extra": extra,
-            "json": json,
-            "color": color,
-        });
+                "path": path,
+                "name_noext": name_noext,
+                "name":name,
+                "ext": ext,
+                "pdf": pdf,
+                "txt": txt,
+                "extra": extra,
+                "json": json,
+                "color": color,
+                });
     }
     // sort by name
     file_objects.sort(function(a,b) { return a["name"] > b["name"]; });
@@ -259,88 +257,22 @@ function register_hover() {
     $("[id^=text_],[id^=extra_]").hover(
         function() {
             console.log("fading in hover");
-            $(this).delay(1000).queue(function(){
+            $(this).delay(500).queue(function(){
                 $(this).addClass('hovered').siblings().removeClass('hovered');
                 var link = $(this).attr('href');
                 console.log(link);
-                $("#bintable").load(link, function() {
-                    $("#bintable").html($("#bintable").html().replace(/\n/g,"<br>\n"));
-                    $("#bintable").html($("#bintable").html().replace(/ /g,"&nbsp;"));
-                    $("#bintable").html($("#bintable").html().replace("total_bkg","<b>total_bkg</b>"));
-                });
+                $("#metadata").load(link, function() { });
                 console.log("fading in");
-                $("#bintable").fadeIn();
+                $("#metadata").fadeIn();
             });
         },function() {
             $(this).finish();
-            $("#bintable").delay(500).fadeOut();
+            $("#metadata").delay(500).fadeOut();
         } 
     );
-
-    if (!binInfo) return;
-
-    $("img").mousemove(function(event) {
-        /* console.log(event.offsetX + " " + event.offsetY + " " + event.currentTarget.height + " " + event.currentTarget.name); */
-        var name = event.currentTarget.name;
-        /* var width = event.currentTarget.width; */
-        /* var height = event.currentTarget.height; */
-        var xfrac = event.offsetX / event.currentTarget.width;
-        var yfrac = 1.0 - event.offsetY / event.currentTarget.height;
-        /* $("#message").html(event.offsetX + " " + event.offsetY + " " + event.currentTarget.height + " " + event.currentTarget.width + " " + event.currentTarget.name); */
-        /* $("#message").html(xfrac + " " + yfrac + " " + event.currentTarget.name); */
-        var index = -1;
-        if (name in binInfo) {
-            index = binInfo[name]["xedges"].findIndex(function(x) { return x[0] < xfrac && x[1] > xfrac });
-            if (index >= 0) {
-                var ypair = (binInfo[name]["yedges"][index]);
-                /* console.log(ypair); */
-                if (ypair[0]-0.01 > yfrac || ypair[1]+0.01 < yfrac) index = -1;
-            }
-        }
-        /* $("#message").html(xfrac + " " + yfrac + " " + event.currentTarget.name + " " + index); */
-        /* $("#message").html(event.currentTarget.name + ": Bin " + index + " | yfrac: " + yfrac); */
-        /* console.log(index); */
-        if (index < 0) {
-            $("#bintable").hide();
-            $("#hovercanvas").hide();
-            return;
-        }
-        var table = binInfo[name]["table"]["header"] + "<br>" + binInfo[name]["table"]["bins"][index] + "<br>" + binInfo[name]["table"]["total"];
-        table = table.replace(/\n/g,"<br>\n");
-        table = table.replace(/ /g,"&nbsp;");
-        /* console.log(table); */
-        /* $("#messagebottom").html("<span style='color:red'>"+table+"</span>"); */
-        $("#bintable").show();
-        $("#hovercanvas").show();
-        $("#bintable").html(table);
-
-        var xpair = (binInfo[name]["xedges"][index]);
-        var ypair = (binInfo[name]["yedges"][index]);
-        var img = $('[name="' + name + '"]')[0];
-        var c = document.getElementById("hovercanvas");
-        var x = xpair[0] * event.currentTarget.width;
-        var y = (1.0 - ypair[1]) * event.currentTarget.height;
-        var w = (xpair[1] - xpair[0]) * event.currentTarget.width;
-        var h = (ypair[1] - ypair[0]) * event.currentTarget.height;
-        var bc = img.getBoundingClientRect();
-        c.style.position = "absolute";
-        c.style.left = bc.left + x + window.scrollX;
-        c.style.top = bc.top + y + window.scrollY;
-        c.width = w;
-        c.height = h;
-        var ctx = c.getContext("2d");
-        ctx.clearRect(0, 0, c.width, c.height);
-        ctx.strokeStyle="rgba(0,0,0,0.3)";
-        ctx.lineWidth=1;
-        ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
-        ctx.fillRect(0,0,w,h);
-        ctx.rect(1,1,w-2,h-2);
-        ctx.stroke();
-    });
 }
 
 function register_description_hover() {
-
     console.log("registering hover");
     console.log($("[class^=plot]"));
     $("[class^=plot]").hover(
@@ -355,7 +287,6 @@ function register_description_hover() {
         },function() {
         } 
     );
-
 }
 
 function add_links_to_description(objects) {
@@ -376,13 +307,8 @@ var obj = <?php echo json_encode($data); ?>;
 var filelist = <?php echo json_encode($paths); ?>;
 
 
-var binInfo;
 $(function() {
 
-    $.getJSON("binInfo.json", function(json) {
-        binInfo = json;
-        console.log(json); // this will show the info it in firebug console
-    });
     if (<?php echo $num_directories ?> > 0) {
         $('#jstree_demo_div')
             .on('changed.jstree', function(e,data) {
@@ -424,34 +350,21 @@ $(function() {
                     var nmatches = toshow.length;
                     toshow.show();
                     console.log(toshow.length);
-                    // if (nmatches == 1) {
-                        // $("#message").html(`${nmatches} match`);
-                    // } else {
-                        // $("#message").html(`${nmatches} matches`);
-                    // }
-                    // $("#message").addClass("label");
-                    // $("#message").removeClass("label-warning");
                     register_hover();
                     $("#copyasurl").addClass("badge");
                     $("#copyasurl").attr("data-badge",nmatches);
                 } else {
                     context.parent().parent().show();
-                    // $("#message").html("No matching images!");
                     if (pattern.length > 0) {
-                        // $("#message").html("0 matches!");
-                        // $("#message").addClass("label-warning");
                         $("#copyasurl").addClass("badge");
                         $("#copyasurl").attr("data-badge",0);
+                    } else {
+                        $("#copyasurl").removeClass("badge");
                     }
                 }
             },
         });
     };
-
-    // $( "input[id='filter']" ).on('keyup', function() {
-    //     var pattern = $(this).val();
-    //     markre(pattern);
-    // });
 
     var timer;
     var lastPattern = "";
@@ -648,8 +561,8 @@ if( $description ) {
 ?>
 </div>
 <div id="images"></div>
-<div id="bintablecontainer"  style="text-align: center;">
-<div id="bintable" style="display: inline-block; text-align: left; display: none">
+<div id="metadatacontainer"  style="text-align: center;">
+<div id="metadata" style="display: inline-block; text-align: left; display: none">
 </div>
 </div>
 
