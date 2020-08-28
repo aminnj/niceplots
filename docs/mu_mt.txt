@@ -1,2 +1,5 @@
-blah
+<h4>metadata header</h4>
+If there is a file with the same basename and the <code>.txt</code> extension,
+it will be visible by hovering over the <code>text</code> hyperlink.  The
+contents of the text file are rendered as HTML in this popup.
 
