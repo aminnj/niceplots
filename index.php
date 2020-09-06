@@ -216,7 +216,6 @@ function draw_filtered(filter_paths) {
     var temp_filelist = filelist.filter(function(value) {
             return contains_any(value, filter_paths);
             });
-
     var temp_objects = make_objects(temp_filelist);
     draw_objects(temp_objects);
 }
