@@ -225,7 +225,8 @@ function make_objects(filelist) {
     for (var i = 0; i < filelist.length; i++) {
         var f = filelist[i];
         var ext = f.split('.').pop();
-        if (!in_array(ext, ["svg", "gif", "png", "jpeg", "jpg"])) continue;
+        // if (!in_array(ext, ["svg", "gif", "png", "jpeg", "jpg"])) continue; // NOT in older versions of php?
+        if ((ext != "png") && (ext != "svg") && (ext != "gif") && (ext != "jpeg") && (ext != "jpg")) continue;
         var color = "";
         var name = f.split('/').reverse()[0];
         var path = f.replace(name, "");
