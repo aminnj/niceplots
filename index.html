@@ -61,6 +61,13 @@ fieldset.dark-mode {
     border-color: #fff;
 }
 
+span.label.dark-mode {
+    border: 0.1rem solid #fff;
+    margin:-0.1rem;
+    color: #eef0f3;
+    background: none;
+}
+
 #custom-handle {
     width: 3em;
     font-family: sans-serif;
@@ -162,7 +169,7 @@ function draw_objects(file_objects) {
                             ${txt_str+extra_str+json_str}
                         </legend>
                         <a href='${pdf}'>
-                            <img class='innerimg has-dark' name='${name_noext}' src='${path+"/"+name}' height='300px' />
+                            <img class='innerimg has-dark' loading='lazy' name='${name_noext}' src='${path+"/"+name}' height='300px' />
                         </a>
                     </fieldset>
                 </div>`);
@@ -260,8 +267,8 @@ function add_links_to_description(objects) {
 
 // ultimately this will be a master filelist with all files recursively in this directory
 // then we will filter for files we want to show
-var obj = [{"id":".\/mu_nFOs.png","parent":"#","text":"mu_nFOs.png","icon":"file"},{"id":".\/el_mt.pdf","parent":"#","text":"el_mt.pdf","icon":"file"},{"id":".\/el_mt.png","parent":"#","text":"el_mt.png","icon":"file"},{"id":".\/y2018_htnb1_calomet_in.png","parent":"#","text":"y2018_htnb1_calomet_in.png","icon":"file"},{"id":".\/index.html","parent":"#","text":"index.html","icon":"file"},{"id":".\/time.png","parent":"#","text":"time.png","icon":"file"},{"id":".\/run2_br_ht.png","parent":"#","text":"run2_br_ht.png","icon":"file"},{"id":".\/mu_mt.png","parent":"#","text":"mu_mt.png","icon":"file"},{"id":".\/mu_mt.txt","parent":"#","text":"mu_mt.txt","icon":"file"},{"id":".\/mu_mt.pdf","parent":"#","text":"mu_mt.pdf","icon":"file"},{"id":".\/mu_nFOs.pdf","parent":"#","text":"mu_nFOs.pdf","icon":"file"}];
-var filelist = [".",".\/mu_nFOs.png",".\/el_mt.pdf",".\/el_mt.png",".\/y2018_htnb1_calomet_in.png",".\/index.html",".\/time.png",".\/run2_br_ht.png",".\/mu_mt.png",".\/mu_mt.txt",".\/mu_mt.pdf",".\/mu_nFOs.pdf"];
+var obj = [{"id":".\/run2_br_ht.png","parent":"#","text":"run2_br_ht.png","icon":"file"},{"id":".\/mu_mt.pdf","parent":"#","text":"mu_mt.pdf","icon":"file"},{"id":".\/mu_nFOs.pdf","parent":"#","text":"mu_nFOs.pdf","icon":"file"},{"id":".\/mu_nFOs.png","parent":"#","text":"mu_nFOs.png","icon":"file"},{"id":".\/mu_mt.png","parent":"#","text":"mu_mt.png","icon":"file"},{"id":".\/time.png","parent":"#","text":"time.png","icon":"file"},{"id":".\/y2018_htnb1_calomet_in.png","parent":"#","text":"y2018_htnb1_calomet_in.png","icon":"file"},{"id":".\/mu_mt.txt","parent":"#","text":"mu_mt.txt","icon":"file"},{"id":".\/el_mt.png","parent":"#","text":"el_mt.png","icon":"file"},{"id":".\/index.html","parent":"#","text":"index.html","icon":"file"},{"id":".\/el_mt.pdf","parent":"#","text":"el_mt.pdf","icon":"file"}];
+var filelist = [".",".\/run2_br_ht.png",".\/mu_mt.pdf",".\/mu_nFOs.pdf",".\/mu_nFOs.png",".\/mu_mt.png",".\/time.png",".\/y2018_htnb1_calomet_in.png",".\/mu_mt.txt",".\/el_mt.png",".\/index.html",".\/el_mt.pdf"];
 
 
 $(function() {
