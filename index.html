@@ -217,16 +217,12 @@ function make_objects(filelist) {
 }
 
 function register_hover() {
-    console.log("registering hover");
     $("[id^=text_],[id^=extra_]").hover(
         function() {
-            console.log("fading in hover");
             $(this).delay(500).queue(function(){
                 $(this).addClass('hovered').siblings().removeClass('hovered');
                 var link = $(this).attr('href');
-                console.log(link);
                 $("#metadata").load(link, function() { });
-                console.log("fading in");
                 $("#metadata").fadeIn();
             });
         },function() {
@@ -237,15 +233,10 @@ function register_hover() {
 }
 
 function register_description_hover() {
-    console.log("registering hover");
-    console.log($("[class^=plot]"));
     $("[class^=plot]").hover(
         function() {
-            console.log("fading in hover");
             var plotname = $(this).text();
             var plotselector = "#" + plotname;
-            console.log(plotname);
-            console.log($(plotselector));
             $(plotselector).effect('highlight',{"color":"9d9"},500);
             $(plotselector).finish();
         },function() {
@@ -254,14 +245,11 @@ function register_description_hover() {
 }
 
 function add_links_to_description(objects) {
-    console.log(objects);
     var desc_src = $("#description").html();
-    console.log(desc_src);
     for (var i = 0; i < objects.length; i++) {
         var plotname = objects[i]["name_noext"];
         desc_src = desc_src.split(plotname).join("<a href=\"#"+plotname+"\" class=\"plot\">"+plotname+"</a>");
     }
-    console.log(desc_src);
     $("#description").html(desc_src);
 }
 
@@ -305,7 +293,6 @@ $(function() {
         var regex = new RegExp(pattern,modifier);
         context.markRegExp(regex,{
             done: function(counter) {
-                console.log(counter);
                 $(".form-icon").removeClass("loading");
                 if (counter > 0) {
                     // show all matches and hide those that don't match
@@ -313,7 +300,6 @@ $(function() {
                     var toshow = context.has("mark").parent().parent();
                     var nmatches = toshow.length;
                     toshow.show();
-                    console.log(toshow.length);
                     register_hover();
                     $("#copyasurl").addClass("badge");
                     $("#copyasurl").attr("data-badge",nmatches);
@@ -355,7 +341,6 @@ $(function() {
     // $("#slider").change(function() {
     $("#slider").bind("input",function() {
         var val = $(this).val();
-        console.log(val);
         $("img").attr("height",300*val/100);
         if ((val == 0 && imagesVisible) || (val != 0 && !imagesVisible)) {
             toggleImages();
@@ -379,12 +364,14 @@ $(function() {
     // register hover for links in description AFTER adding them
     register_description_hover();
 
+    if (sessionStorage.getItem("darkMode")) {
+        toggleDarkMode();
+    }
+
 });
 
 // vimlike incsearch: press / to focus on search box
 $(document).keydown(function(e) {
-    // console.log($(event.target));
-    // console.log(e.keyCode);
     var modifierNoShift = e.metaKey || e.ctrlKey || e.altKey;
     var modifier = e.shiftKey || modifierNoShift;
     if(e.keyCode == 191 && !modifier) {
@@ -440,7 +427,6 @@ function copyToClipboard(text) {
 function getQueryURL() {
     var query = escape($('#filter').val());
     var queryURL = "http://"+location.hostname+location.pathname+"?"+query;
-    console.log(queryURL);
     copyToClipboard(queryURL)
 }
 
@@ -452,6 +438,7 @@ function toggleDarkMode() {
         toggleSaturation();
     }
     darkMode ^= true;
+    sessionStorage.setItem("darkMode", darkMode);
 }
 
 var superSaturation = false;
