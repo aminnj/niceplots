@@ -66,6 +66,13 @@ fieldset.dark-mode {
     border-color: #fff;
 }
 
+span.label.dark-mode {
+    border: 0.1rem solid #fff;
+    margin:-0.1rem;
+    color: #eef0f3;
+    background: none;
+}
+
 #custom-handle {
     width: 3em;
     font-family: sans-serif;
@@ -205,7 +212,7 @@ function draw_objects(file_objects) {
                             ${txt_str+extra_str+json_str}
                         </legend>
                         <a href='${pdf}'>
-                            <img class='innerimg has-dark' name='${name_noext}' src='${path+"/"+name}' height='300px' />
+                            <img class='innerimg has-dark' loading='lazy' name='${name_noext}' src='${path+"/"+name}' height='300px' />
                         </a>
                     </fieldset>
                 </div>`);
