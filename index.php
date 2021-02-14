@@ -407,7 +407,7 @@ $(function() {
     // register hover for links in description AFTER adding them
     register_description_hover();
 
-    if (sessionStorage.getItem("darkMode")) {
+    if (sessionStorage.getItem("darkMode") == 1) {
         toggleDarkMode();
     }
 
@@ -481,7 +481,11 @@ function toggleDarkMode() {
         toggleSaturation();
     }
     darkMode ^= true;
-    sessionStorage.setItem("darkMode", darkMode);
+    if (darkMode) {
+        sessionStorage.setItem("darkMode", 1);
+    } else {
+        sessionStorage.setItem("darkMode", 0);
+    }
 }
 
 var superSaturation = false;
