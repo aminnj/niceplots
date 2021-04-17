@@ -202,6 +202,8 @@ function draw_objects(file_objects) {
         var color = fo["color"];
         var pdf = fo["pdf"] || fo["name"];
         if (path) pdf = path+pdf;
+        var pdf = escape(pdf);
+        var src = escape(path+"/"+name);
         var txt_str = (fo["txt"].length > 0) ? `<span class='label label-rounded label-secondary'><a href='${fo["txt"]}' id='text_${fo["name_noext"]}'>text</a></span>` : "";
         var extra_str = (fo["extra"].length > 0) ? `<span class='label label-rounded'><a href='${fo["extra"]}' id='extra_${fo["name_noext"]}'>extra</a></span>` : "";
         var json_str = (fo["extra"].length > 0) ? `<span class='label label-rounded'><a href='${jsrootbase+fo["json"]}' id='json_${fo["name_noext"]}'>js</a></span>` : "";
@@ -212,7 +214,7 @@ function draw_objects(file_objects) {
                             ${txt_str+extra_str+json_str}
                         </legend>
                         <a href='${pdf}'>
-                            <img class='innerimg has-dark' loading='lazy' name='${name_noext}' src='${path+"/"+name}' height='300px' />
+                            <img class='innerimg has-dark' loading='lazy' name='${name_noext}' src='${src}' height='300px' />
                         </a>
                     </fieldset>
                 </div>`);
