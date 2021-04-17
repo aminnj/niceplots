@@ -159,6 +159,8 @@ function draw_objects(file_objects) {
         var color = fo["color"];
         var pdf = fo["pdf"] || fo["name"];
         if (path) pdf = path+pdf;
+        var pdf = escape(pdf);
+        var src = escape(path+"/"+name);
         var txt_str = (fo["txt"].length > 0) ? `<span class='label label-rounded label-secondary'><a href='${fo["txt"]}' id='text_${fo["name_noext"]}'>text</a></span>` : "";
         var extra_str = (fo["extra"].length > 0) ? `<span class='label label-rounded'><a href='${fo["extra"]}' id='extra_${fo["name_noext"]}'>extra</a></span>` : "";
         var json_str = (fo["extra"].length > 0) ? `<span class='label label-rounded'><a href='${jsrootbase+fo["json"]}' id='json_${fo["name_noext"]}'>js</a></span>` : "";
@@ -169,7 +171,7 @@ function draw_objects(file_objects) {
                             ${txt_str+extra_str+json_str}
                         </legend>
                         <a href='${pdf}'>
-                            <img class='innerimg has-dark' loading='lazy' name='${name_noext}' src='${path+"/"+name}' height='300px' />
+                            <img class='innerimg has-dark' loading='lazy' name='${name_noext}' src='${src}' height='300px' />
                         </a>
                     </fieldset>
                 </div>`);
@@ -255,8 +257,8 @@ function add_links_to_description(objects) {
 
 // ultimately this will be a master filelist with all files recursively in this directory
 // then we will filter for files we want to show
-var obj = [{"id":".\/run2_br_ht.png","parent":"#","text":"run2_br_ht.png","icon":"file"},{"id":".\/mu_mt.pdf","parent":"#","text":"mu_mt.pdf","icon":"file"},{"id":".\/mu_nFOs.pdf","parent":"#","text":"mu_nFOs.pdf","icon":"file"},{"id":".\/mu_nFOs.png","parent":"#","text":"mu_nFOs.png","icon":"file"},{"id":".\/mu_mt.png","parent":"#","text":"mu_mt.png","icon":"file"},{"id":".\/time.png","parent":"#","text":"time.png","icon":"file"},{"id":".\/y2018_htnb1_calomet_in.png","parent":"#","text":"y2018_htnb1_calomet_in.png","icon":"file"},{"id":".\/mu_mt.txt","parent":"#","text":"mu_mt.txt","icon":"file"},{"id":".\/el_mt.png","parent":"#","text":"el_mt.png","icon":"file"},{"id":".\/index.html","parent":"#","text":"index.html","icon":"file"},{"id":".\/el_mt.pdf","parent":"#","text":"el_mt.pdf","icon":"file"}];
-var filelist = [".",".\/run2_br_ht.png",".\/mu_mt.pdf",".\/mu_nFOs.pdf",".\/mu_nFOs.png",".\/mu_mt.png",".\/time.png",".\/y2018_htnb1_calomet_in.png",".\/mu_mt.txt",".\/el_mt.png",".\/index.html",".\/el_mt.pdf"];
+var obj = [{"id":".\/el_mt.png","parent":"#","text":"el_mt.png","icon":"file"},{"id":".\/y2018_htnb1_calomet_in.png","parent":"#","text":"y2018_htnb1_calomet_in.png","icon":"file"},{"id":".\/run2_br_ht.png","parent":"#","text":"run2_br_ht.png","icon":"file"},{"id":".\/el_mt.pdf","parent":"#","text":"el_mt.pdf","icon":"file"},{"id":".\/mu_mt.pdf","parent":"#","text":"mu_mt.pdf","icon":"file"},{"id":".\/index.html","parent":"#","text":"index.html","icon":"file"},{"id":".\/mu_mt.txt","parent":"#","text":"mu_mt.txt","icon":"file"},{"id":".\/time.png","parent":"#","text":"time.png","icon":"file"},{"id":".\/mu_nFOs.png","parent":"#","text":"mu_nFOs.png","icon":"file"},{"id":".\/mu_mt.png","parent":"#","text":"mu_mt.png","icon":"file"},{"id":".\/mu_nFOs.pdf","parent":"#","text":"mu_nFOs.pdf","icon":"file"}];
+var filelist = [".",".\/el_mt.png",".\/y2018_htnb1_calomet_in.png",".\/run2_br_ht.png",".\/el_mt.pdf",".\/mu_mt.pdf",".\/index.html",".\/mu_mt.txt",".\/time.png",".\/mu_nFOs.png",".\/mu_mt.png",".\/mu_nFOs.pdf"];
 
 
 $(function() {
