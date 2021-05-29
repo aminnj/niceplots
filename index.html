@@ -10,6 +10,7 @@ testplots</title>
 <script defer src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
 <link defer rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
 <link defer rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
 <link defer rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
@@ -163,15 +164,18 @@ function draw_objects(file_objects) {
         var src = escape(path+"/"+name);
         var txt_str = (fo["txt"].length > 0) ? `<span class='label label-rounded label-secondary'><a href='${fo["txt"]}' id='text_${fo["name_noext"]}'>text</a></span>` : "";
         var extra_str = (fo["extra"].length > 0) ? `<span class='label label-rounded'><a href='${fo["extra"]}' id='extra_${fo["name_noext"]}'>extra</a></span>` : "";
-        var json_str = (fo["extra"].length > 0) ? `<span class='label label-rounded'><a href='${jsrootbase+fo["json"]}' id='json_${fo["name_noext"]}'>js</a></span>` : "";
+        var inner = `<img class='innerimg has-dark' loading='lazy' name='${name_noext}' src='${src}' height='300px' />`;
+        if (fo["onlypdf"]) {
+            inner = `<canvas class='innerimg has-dark' data-pdf-src='${pdf}' id='canv_${name_noext}' height='300px' ></canvas>`;
+        }
         $("#images").append(`<div class='box' id='${name_noext}'>
                     <fieldset class='has-dark'>
                         <legend class='has-dark'>
                             <span class='label label-rounded has-dark'>${name_noext}</span>
-                            ${txt_str+extra_str+json_str}
+                            ${txt_str+extra_str}
                         </legend>
                         <a href='${pdf}'>
-                            <img class='innerimg has-dark' loading='lazy' name='${name_noext}' src='${src}' height='300px' />
+                            ${inner}
                         </a>
                     </fieldset>
                 </div>`);
@@ -187,12 +191,23 @@ function draw_filtered(filter_paths) {
 }
 
 function make_objects(filelist) {
+    var good_exts = ["png", "svg", "gif", "jpeg", "jpg", "pdf"];
+    // basenames (ext stripped) for all files that are not .pdf
+    var basenonpdf = filelist.filter((f)=>!f.endsWith(".pdf")).map( (f,_)=>( f.split(".").slice(0, -1).join(".")   ) );
+    
     var file_objects = [];
     for (var i = 0; i < filelist.length; i++) {
         var f = filelist[i];
         var ext = f.split('.').pop();
-        // if (!in_array(ext, ["svg", "gif", "png", "jpeg", "jpg"])) continue; // NOT in older versions of php?
-        if ((ext != "png") && (ext != "svg") && (ext != "gif") && (ext != "jpeg") && (ext != "jpg")) continue;
+        // skip unknown extensions
+        if (!good_exts.includes(ext)) continue;
+
+        // if we have a pdf file that has a corresponding non-pdf file,
+        // then we skip the file if it is .pdf (otherwise we double count/render)
+        var basename = f.split(".").slice(0,-1).join(".");
+        var onlypdf = !basenonpdf.includes(basename);
+        if ((ext == "pdf") && !onlypdf) continue;
+
         var color = "";
         var name = f.split('/').reverse()[0];
         var path = f.replace(name, "");
@@ -211,6 +226,7 @@ function make_objects(filelist) {
                 "extra": extra,
                 "json": json,
                 "color": color,
+                "onlypdf": onlypdf,
                 });
     }
     // sort by name
@@ -255,10 +271,49 @@ function add_links_to_description(objects) {
     $("#description").html(desc_src);
 }
 
+function enable_pdfjs() {
+    var elements = document.querySelectorAll("canvas[data-pdf-src]");
+    if (elements.length < 1) return;
+
+    var pdfjsLib = window['pdfjs-dist/build/pdf'];
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js';
+
+    elements.forEach(function(element,idx) {
+        var canvasid = element.id;
+        var pdfurl = element.getAttribute("data-pdf-src");
+
+        var loadingTask = pdfjsLib.getDocument(pdfurl);
+        loadingTask.promise.then(function(pdf) {
+
+            pdf.getPage(1).then(function(page) {
+
+                var canvas = document.getElementById(canvasid);
+                var height = canvas.height;
+                var context = canvas.getContext("2d");
+                var viewport = page.getViewport({scale: 5});
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                canvas.style.height = height;
+
+                var renderContext = {
+                    canvasContext: context,
+                    viewport: viewport,
+                };
+                var renderTask = page.render(renderContext);
+                renderTask.promise.then(function () {
+                });
+            });
+        }, function (reason) {
+            // PDF loading error
+            console.error(reason);
+        });
+
+    });
+}
 // ultimately this will be a master filelist with all files recursively in this directory
 // then we will filter for files we want to show
-var obj = [{"id":".\/el_mt.png","parent":"#","text":"el_mt.png","icon":"file"},{"id":".\/y2018_htnb1_calomet_in.png","parent":"#","text":"y2018_htnb1_calomet_in.png","icon":"file"},{"id":".\/run2_br_ht.png","parent":"#","text":"run2_br_ht.png","icon":"file"},{"id":".\/el_mt.pdf","parent":"#","text":"el_mt.pdf","icon":"file"},{"id":".\/mu_mt.pdf","parent":"#","text":"mu_mt.pdf","icon":"file"},{"id":".\/index.html","parent":"#","text":"index.html","icon":"file"},{"id":".\/mu_mt.txt","parent":"#","text":"mu_mt.txt","icon":"file"},{"id":".\/time.png","parent":"#","text":"time.png","icon":"file"},{"id":".\/mu_nFOs.png","parent":"#","text":"mu_nFOs.png","icon":"file"},{"id":".\/mu_mt.png","parent":"#","text":"mu_mt.png","icon":"file"},{"id":".\/mu_nFOs.pdf","parent":"#","text":"mu_nFOs.pdf","icon":"file"}];
-var filelist = [".",".\/el_mt.png",".\/y2018_htnb1_calomet_in.png",".\/run2_br_ht.png",".\/el_mt.pdf",".\/mu_mt.pdf",".\/index.html",".\/mu_mt.txt",".\/time.png",".\/mu_nFOs.png",".\/mu_mt.png",".\/mu_nFOs.pdf"];
+var obj = [{"id":".\/y2018_htnb1_calomet_in.png","parent":"#","text":"y2018_htnb1_calomet_in.png","icon":"file"},{"id":".\/el_mt.pdf","parent":"#","text":"el_mt.pdf","icon":"file"},{"id":".\/mu_mt.txt","parent":"#","text":"mu_mt.txt","icon":"file"},{"id":".\/run2_br_ht.png","parent":"#","text":"run2_br_ht.png","icon":"file"},{"id":".\/index.html","parent":"#","text":"index.html","icon":"file"},{"id":".\/mu_nFOs.png","parent":"#","text":"mu_nFOs.png","icon":"file"},{"id":".\/el_mt.png","parent":"#","text":"el_mt.png","icon":"file"},{"id":".\/mu_mt.png","parent":"#","text":"mu_mt.png","icon":"file"},{"id":".\/time.png","parent":"#","text":"time.png","icon":"file"},{"id":".\/mu_nFOs.pdf","parent":"#","text":"mu_nFOs.pdf","icon":"file"},{"id":".\/mu_mt.pdf","parent":"#","text":"mu_mt.pdf","icon":"file"}];
+var filelist = [".",".\/y2018_htnb1_calomet_in.png",".\/el_mt.pdf",".\/mu_mt.txt",".\/run2_br_ht.png",".\/index.html",".\/mu_nFOs.png",".\/el_mt.png",".\/mu_mt.png",".\/time.png",".\/mu_nFOs.pdf",".\/mu_mt.pdf"];
 
 
 $(function() {
@@ -365,6 +420,7 @@ $(function() {
     add_links_to_description(file_objects);
     // register hover for links in description AFTER adding them
     register_description_hover();
+    enable_pdfjs();
 
     if (sessionStorage.getItem("darkMode") == 1) {
         toggleDarkMode();
