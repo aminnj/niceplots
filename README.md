@@ -11,6 +11,7 @@ Some **Vim keybindings** are also provided. Oh, there's also a **dark mode**, ev
 
 By default, browser-friendly images (png, svg, gif) are displayed, and if a pdf version of the file
 (same name but with "pdf" as the extension) exists, the images are links to those.
+If only a pdf file is available, it will be rendered with [pdfjs](https://mozilla.github.io/pdf.js/).
 
 ### "Installation"
 
