@@ -312,8 +312,8 @@ function enable_pdfjs() {
 }
 // ultimately this will be a master filelist with all files recursively in this directory
 // then we will filter for files we want to show
-var obj = [{"id":".\/y2018_htnb1_calomet_in.png","parent":"#","text":"y2018_htnb1_calomet_in.png","icon":"file"},{"id":".\/el_mt.pdf","parent":"#","text":"el_mt.pdf","icon":"file"},{"id":".\/mu_mt.txt","parent":"#","text":"mu_mt.txt","icon":"file"},{"id":".\/run2_br_ht.png","parent":"#","text":"run2_br_ht.png","icon":"file"},{"id":".\/index.html","parent":"#","text":"index.html","icon":"file"},{"id":".\/mu_nFOs.png","parent":"#","text":"mu_nFOs.png","icon":"file"},{"id":".\/el_mt.png","parent":"#","text":"el_mt.png","icon":"file"},{"id":".\/mu_mt.png","parent":"#","text":"mu_mt.png","icon":"file"},{"id":".\/time.png","parent":"#","text":"time.png","icon":"file"},{"id":".\/mu_nFOs.pdf","parent":"#","text":"mu_nFOs.pdf","icon":"file"},{"id":".\/mu_mt.pdf","parent":"#","text":"mu_mt.pdf","icon":"file"}];
-var filelist = [".",".\/y2018_htnb1_calomet_in.png",".\/el_mt.pdf",".\/mu_mt.txt",".\/run2_br_ht.png",".\/index.html",".\/mu_nFOs.png",".\/el_mt.png",".\/mu_mt.png",".\/time.png",".\/mu_nFOs.pdf",".\/mu_mt.pdf"];
+var obj = [{"id":".\/y2018_htnb1_calomet_in.png","parent":"#","text":"y2018_htnb1_calomet_in.png","icon":"file"},{"id":".\/el_mt.pdf","parent":"#","text":"el_mt.pdf","icon":"file"},{"id":".\/mu_mt.txt","parent":"#","text":"mu_mt.txt","icon":"file"},{"id":".\/run2_br_ht.png","parent":"#","text":"run2_br_ht.png","icon":"file"},{"id":".\/index.html","parent":"#","text":"index.html","icon":"file"},{"id":".\/mu_nFOs.png","parent":"#","text":"mu_nFOs.png","icon":"file"},{"id":".\/mu_mt.png","parent":"#","text":"mu_mt.png","icon":"file"},{"id":".\/time.png","parent":"#","text":"time.png","icon":"file"},{"id":".\/mu_nFOs.pdf","parent":"#","text":"mu_nFOs.pdf","icon":"file"},{"id":".\/mu_mt.pdf","parent":"#","text":"mu_mt.pdf","icon":"file"}];
+var filelist = [".",".\/y2018_htnb1_calomet_in.png",".\/el_mt.pdf",".\/mu_mt.txt",".\/run2_br_ht.png",".\/index.html",".\/mu_nFOs.png",".\/mu_mt.png",".\/time.png",".\/mu_nFOs.pdf",".\/mu_mt.pdf"];
 
 
 $(function() {
@@ -399,6 +399,7 @@ $(function() {
     $("#slider").bind("input",function() {
         var val = $(this).val();
         $("img").attr("height",300*val/100);
+        $("canvas").attr("style",`height: ${300*val/100}px`);
         if ((val == 0 && imagesVisible) || (val != 0 && !imagesVisible)) {
             toggleImages();
         }
@@ -515,6 +516,7 @@ function toggleSaturation() {
 var imagesVisible = true;
 function toggleImages() {
     $("img").toggle();
+    $("canvas").toggle();
     $("fieldset").toggleClass("noborder");
     imagesVisible ^= true;
 }
