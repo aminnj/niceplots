@@ -442,6 +442,7 @@ $(function() {
     $("#slider").bind("input",function() {
         var val = $(this).val();
         $("img").attr("height",300*val/100);
+        $("canvas").attr("style",`height: ${300*val/100}px`);
         if ((val == 0 && imagesVisible) || (val != 0 && !imagesVisible)) {
             toggleImages();
         }
@@ -558,6 +559,7 @@ function toggleSaturation() {
 var imagesVisible = true;
 function toggleImages() {
     $("img").toggle();
+    $("canvas").toggle();
     $("fieldset").toggleClass("noborder");
     imagesVisible ^= true;
 }
