@@ -28,7 +28,7 @@ php ../index.php > index.html
 open index.html
 ```
 
-If you need extra features like `.txt`, `.json` below, you can use python's `SimpleHTTPServer`
+If you need extra features like `.txt` below, you can use python's `SimpleHTTPServer`
 to serve up the page and bypass the CORS policy:
 ```bash
 cd testplots
@@ -72,12 +72,12 @@ The are also some features to display/link auxiliary content.
 at the top of the final page.
   * if an image name (sans extension) shows up in the description, it is highlighted and becomes a link to the corresponding image
 
-* if files with the same name as the image, but extensions of `txt`, `extra`, `json` are found, they become links
-  * hovering over links for `txt` and `extra` will show the contents in a transient overlay at the bottom of the page
+* if files with the same name as the image, but extensions of `txt` or `extra` are found, they become links
+  * hovering over these links will show the contents in a transient overlay at the bottom of the page
 
 #### Helper script for image conversion
 
-You'll might have a bunch of pdf images from a script and want to (1)
+You might have a bunch of pdf images from a script and want to (1)
 convert them all to embeddable png files and (2) upload them to a directory
 with this niceplots index page.  That's where `misc/niceplots.sh` comes in. Note that
 this script is basically a template, as these operations are highly dependent
