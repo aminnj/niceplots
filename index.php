@@ -48,7 +48,8 @@ body {
     background-color: #fff;
 }
 body.dark-mode {
-    background-color: #000;
+    /* background-color: #000; */
+    background-color: #141414; /* 8% lightness 8*/
 }
 
 .noborder {
@@ -64,13 +65,13 @@ fieldset {
     margin: 1px;
 }
 fieldset.dark-mode {
-    border-color: #fff;
+    border-color: #dcdcdc;
 }
 
 span.label.dark-mode {
-    border: 0.1rem solid #fff;
+    border: 0.1rem solid #dcdcdc;
     margin:-0.1rem;
-    color: #eef0f3;
+    color: #dcdcdc;
     background: none;
 }
 
@@ -110,16 +111,16 @@ span.label.dark-mode {
     padding: 3px;
 }
 .innerimg.dark-mode {
-    filter: hue-rotate(180deg) invert(1);
-    -webkit-filter: hue-rotate(180deg) invert(1);
+    filter: hue-rotate(180deg) invert(0.92); /* 8% lightness */
+    -webkit-filter: hue-rotate(180deg) invert(0.92);
 }
 .innerimg.super-saturate {
     filter: saturate(2.5);
     -webkit-filter: saturate(2.5);
 }
 .innerimg.dark-mode-super-saturate {
-    filter: hue-rotate(180deg) invert(1) saturate(2.5);
-    -webkit-filter: hue-rotate(180deg) invert(1) saturate(2.5);
+    filter: hue-rotate(180deg) invert(0.92) saturate(2.5);
+    -webkit-filter: hue-rotate(180deg) invert(0.92) saturate(2.5);
 }
 
 
@@ -129,7 +130,7 @@ legend {
     margin: 0px;
 }
 legend.dark-mode {
-    color: #fff;
+    color: #dcdcdc;
 }
 
 a {
@@ -390,6 +391,7 @@ $(function() {
 
         $(".form-icon").addClass("loading");
 
+        document.location.hash = escape($('#filter').val());
         var regex = new RegExp(pattern,modifier);
         context.markRegExp(regex,{
             done: function(counter) {
@@ -401,15 +403,15 @@ $(function() {
                     var nmatches = toshow.length;
                     toshow.show();
                     register_hover();
-                    $("#copyasurl").addClass("badge");
-                    $("#copyasurl").attr("data-badge",nmatches);
+                    $("#filterbadge").addClass("badge");
+                    $("#filterbadge").attr("data-badge",nmatches);
                 } else {
                     context.parent().parent().show();
                     if (pattern.length > 0) {
-                        $("#copyasurl").addClass("badge");
-                        $("#copyasurl").attr("data-badge",0);
+                        $("#filterbadge").addClass("badge");
+                        $("#filterbadge").attr("data-badge",0);
                     } else {
-                        $("#copyasurl").removeClass("badge");
+                        $("#filterbadge").removeClass("badge");
                     }
                 }
             },
@@ -453,9 +455,9 @@ $(function() {
         draw_objects(file_objects);
 
     // if page was loaded with a parameter for search, then simulate a search
-    // ex: http://uaf-6.t2.ucsd.edu/~namin/dump/plots_isfr_Aug26/?HH$
-    if(window.location.href.indexOf("?") != -1) {
-        var search = unescape(window.location.href.split("?")[1]);
+    // ex: https://foo.bar/plots_isfr_Aug26/#HH$
+     if(document.location.hash.length > 0) {
+        var search = unescape(document.location.hash.substring(1));
         $("#filter").val(search);
         markre($("#filter").val());
     }
@@ -527,9 +529,7 @@ function copyToClipboard(text) {
 }
 
 function getQueryURL() {
-    var query = escape($('#filter').val());
-    var queryURL = "http://"+location.hostname+location.pathname+"?"+query;
-    copyToClipboard(queryURL)
+    copyToClipboard(location.href);
 }
 
 var darkMode = false;
@@ -576,11 +576,10 @@ function toggleImages() {
 
         <div class="has-icon-right" style="width: 200px; display: inline-block;">
             <input type="text" class="form-input input-sm inputbar" id="filter" placeholder="Search/filter" />
-            <i class="form-icon"></i>
+            <span class="form-icon" id="filterbadge" data-badge=""></span>
         </div>
 
         &nbsp;
-        <a href="javascript:;" id="copyasurl" class='has-dark btn btn-sm' onClick="getQueryURL();" data-badge="">copy as URL</a> &nbsp;
 
 
         <div class="popover popover-bottom">

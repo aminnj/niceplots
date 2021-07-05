@@ -32,15 +32,20 @@ If you need extra features like `.txt` below, you can use python's `SimpleHTTPSe
 to serve up the page and bypass the CORS policy:
 ```bash
 cd testplots
-
-cp ../index.php . 
-php -S localhost:8000
-
-# OR
 php ../index.php > index.html
-python -m SimpleHTTPServer # or `python3 -m http.server`
+open http://localhost:8000
+python3 -m http.server
+```
 
-# visit http://localhost:8000 your browser
+To quickly serve a directory of images, here is a handy bash function:
+```bash
+function niceserve() {
+    port=8000
+    curl -sSLO https://raw.githubusercontent.com/aminnj/niceplots/master/index.php
+    php index.php > index.html
+    open http://localhost:$port
+    python3 -m http.server $port
+}
 ```
 
 ### Features
@@ -82,4 +87,3 @@ convert them all to embeddable png files and (2) upload them to a directory
 with this niceplots index page.  That's where `misc/niceplots.sh` comes in. Note that
 this script is basically a template, as these operations are highly dependent
 upon your configuration/computer, so assume you will need to modify many parts.
-
