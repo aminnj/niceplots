@@ -52,6 +52,17 @@ body.dark-mode {
     background-color: #141414; /* 8% lightness 8*/
 }
 
+input[type=text] {
+}
+input[type=text].dark-mode {
+  background-color: #141414;
+  color: #dcdcdc;
+}
+
+button.dark-mode {
+  background-color: #141414;
+}
+
 .noborder {
     border: none;
     padding: 0px;
@@ -194,7 +205,6 @@ function contains_any(str, substrings) {
 }
 
 function draw_objects(file_objects) {
-    var jsrootbase = "http://uaf-8.t2.ucsd.edu/~namin/dump/jsroot/index.htm?json=../../.."+window.location.pathname;
     $("#images").html("");
     for (var ifo = 0; ifo < file_objects.length; ifo++) {
         var fo = file_objects[ifo];
@@ -206,8 +216,8 @@ function draw_objects(file_objects) {
         if (path) pdf = path+pdf;
         var pdf = escape(pdf);
         var src = escape(path+"/"+name);
-        var txt_str = (fo["txt"].length > 0) ? `<span class='label label-rounded label-secondary'><a href='${fo["txt"]}' id='text_${fo["name_noext"]}'>text</a></span>` : "";
-        var extra_str = (fo["extra"].length > 0) ? `<span class='label label-rounded'><a href='${fo["extra"]}' id='extra_${fo["name_noext"]}'>extra</a></span>` : "";
+        var txt_str = (fo["txt"].length > 0) ? `<span class='label label-rounded label-secondary' style='margin-left: 2px;'><a href='${fo["txt"]}' id='text_${fo["name_noext"]}'>text</a></span>` : "";
+        var extra_str = (fo["extra"].length > 0) ? `<span class='label label-rounded' style='margin-left: 2px;'><a href='${fo["extra"]}' id='extra_${fo["name_noext"]}'>extra</a></span>` : "";
         var inner = `<img class='innerimg has-dark' loading='lazy' name='${name_noext}' src='${src}' height='300px' />`;
         if (fo["onlypdf"]) {
             inner = `<canvas class='innerimg has-dark' data-pdf-src='${pdf}' id='canv_${name_noext}' height='300px' ></canvas>`;
@@ -575,7 +585,7 @@ function toggleImages() {
         <div id="jstree_demo_div"> </div>
 
         <div class="has-icon-right" style="width: 200px; display: inline-block;">
-            <input type="text" class="form-input input-sm inputbar" id="filter" placeholder="Search/filter" />
+            <input type="text" class="form-input input-sm inputbar has-dark" id="filter" placeholder="Search/filter" />
             <span class="form-icon" id="filterbadge" data-badge=""></span>
         </div>
 
@@ -583,7 +593,7 @@ function toggleImages() {
 
 
         <div class="popover popover-bottom">
-            <button class="btn btn btn-sm">help</button>
+            <button class="btn btn btn-sm has-dark">help</button>
             <div class="popover-container">
                 <div class="card">
                     <div class="card-header">
